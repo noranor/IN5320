@@ -17,14 +17,65 @@
                 border-radius: 25px;
             }
 
-            .boxed{
+            .big-box{
                 box-sizing: border-box;
                 width: 800px;
-                height: 200px;
+                height: 500px;
                 top: 50%;
                 left: 50%;
-                margin-left: 800px;
-                margin-top: 0px;
+                margin: 0 auto;
+                border: 5px solid darkred;
+            }
+
+            .box1-text{
+                color: white;
+                font-size: 1em;
+                text-align: center;
+                font-family: Arial;
+            }
+
+            .box2-text{
+                color: white;
+                font-size: 1em;
+                text-align: center;
+                font-family: Arial;
+            }
+
+            #small-box{
+                position: relative;
+                float: left;
+                width: 300px;
+                height: 200px;
+                margin-left: 30px;
+                margin-right: 5px;
+                margin: 10 auto;
+                background: darkred;
+            }
+
+            /*.box1{
+                position: relative;
+                float: left;
+                width: 300px;
+                height: 200px;
+                margin-left: 30px;
+                margin-right: 5px;
+                margin: 10 auto;
+                background: darkred;
+            }
+
+            .box2{
+                position: relative;
+                float: right;
+                width: 300px;
+                height: 200px;
+                margin-left: 5px;
+                margin-right: 30px;
+                margin: 10 auto;
+                background: darkred;
+            }*/
+
+            .bachelor{
+                box-sizing: border-box;
                 border: 5px solid darkred;
             }
 
@@ -67,7 +118,7 @@
                             rel="noreffer">
                             Instagram
                             </a>
-                            <span></span>
+                            <span> </span>
                             <a 
                             href="https://www.linkedin.com/in/norskj/"
                             target="_blank"
@@ -80,10 +131,19 @@
             </section>
         </header>
 
-        <div class="boxed">
-            <div class="box2">
-
+        <div class="big-box">            
+            <div class="box1" id="small-box">
+                <p class="box1-text">
+                    Bacheloroppgave ved Senter for Rettsinformatikk (SERI)
+                </p>
             </div>
+
+            <div class="box2" id="small-box">
+                <p class="box2-text">
+                    Prosjektoppgave IT og ledelse (IN5340)
+                </p>
+            </div>
+
         </div>
 
     </body>
