@@ -8,14 +8,20 @@
             h1{
                 background: white;
                 color: darkred;
-                font-size: 2em;
+                font-size: 2rem;
+                text-align: center;
+                font-family: Arial;
+            }
+            h2{
+                color: darkred;
+                font-size: 1rem;
                 text-align: center;
                 font-family: Arial;
             }
 
             .picture{
                 text-align: center;
-                border-radius: 25px;
+                border-radius: 1em 1em 1em 1em;
             }
             .big-box:first-child, .big-box:last-child{
                 margin: 0 auto;
@@ -26,8 +32,6 @@
                 width: 800px;
                 height: 1000px;
                 bottom: 500px;
-                /*top: 50%;
-                left: 50%;*/
                 border: 1em double darkred;
             }
 
@@ -38,7 +42,22 @@
                 font-family: Arial;
             }
 
+
             .box2-text{
+                color: white;
+                font-size: 1em;
+                text-align: center;
+                font-family: Arial;
+            }
+
+            .box3-text{
+                color: white;
+                font-size: 1em;
+                text-align: center;
+                font-family: Arial;
+            }
+
+            .box4-text{
                 color: white;
                 font-size: 1em;
                 text-align: center;
@@ -47,25 +66,36 @@
             
             #small-box{
                 position: relative;
-                width: 300px;
+                width: 350px;
                 height: 200px;
                 background: darkred;
                 border: solid darkred;
                 border-radius: 1em 1em 1em 1em;
-                margin: 10 auto;
+                margin: 5 auto;
                 top: 10px;
             }
 
             .box1{
                 float: left;
-                margin-right: 20px;
-                left: 30px;
+                margin-right: 5px;
+                left: 15px;
             }
 
             .box2{
                 float: right;
-                margin-left: 20px;
-                right: 30px;
+                margin-left: 5px;
+                right: 15px;
+            }
+            .box3{
+                float: right;
+                margin-left: 5px;
+                right: 15px;
+            }
+
+            .box4{
+                float: right;
+                margin-left: 5px;
+                right: 15px;
             }
 
             .bachelor{
@@ -75,11 +105,12 @@
 
             nav a{
                 display: inline-block;
-                padding: 5px;
+                padding: 0.5em 0.5em 0.5em 0.5em;
                 background: darkred;
                 color: white;
                 border: solid darkred;
                 border-radius: 0.5em 0.5em 0.5em 0.5em;
+                margin: 1em 0em 0em 1em;
             }
 
             .links{
@@ -92,12 +123,12 @@
     <body>
         <header>
             <section>
-                <h1>Nora Skjelstad - Student at UiO</h1>
+                <h1>Nora Skjelstad</h1>
 
                 <p class="picture">
                     <img alt="This is me." src="https://scontent.fosl1-1.fna.fbcdn.net/v/t1.0-9/109891541_3075808925873415_5941132660442364197_n.jpg?_nc_cat=103&_nc_sid=09cbfe&_nc_ohc=eDS-TawZBccAX8SlsJU&_nc_ht=scontent.fosl1-1.fna&oh=bfa1ca05482ed471936ee3b653989627&oe=5F6A9883" style="width:400px; height:400px;">
                 </p>
-            
+                <h2>Msc. in eGovernment at Univeristy of Oslo <br>Editor and developer at Lovdata.no</h2>
                 <p> </p>
                 <nav>
                     <div class="links">
@@ -107,14 +138,12 @@
                             rel="noreffer">
                             Facebook
                             </a>
-                            <span></span>
                             <a 
                             href="https://www.instagram.com/noranor/?hl=nb"
                             target="_blank"
                             rel="noreffer">
                             Instagram
                             </a>
-                            <span> </span>
                             <a 
                             href="https://www.linkedin.com/in/norskj/"
                             target="_blank"
@@ -130,17 +159,54 @@
         <div class="big-box">            
             <div class="box1" id="small-box">
                 <p class="box1-text">
-                    Bacheloroppgave ved Senter for Rettsinformatikk (SERI)
+                    <strong>"Automatic routine for compliance with GDPR art. 14 at NAV"</strong>
+                    <br>
+                    <br>
+                    <em>Bachelor theisis in legal informatics concerning the GDPR-compliance at the Norwegian Labour and Welfare Administration.
+                        <br>
+                        <br>
+                        DRI3001
+                    </em>
                 </p>
             </div>
 
             <div class="box2" id="small-box">
                 <p class="box2-text">
-                    Prosjektoppgave IT og ledelse (IN5340)
+                    <strong>"MittAnbud" - Project in IT and Management"</strong>
+                    <br>
+                    <br>
+                    <em>Project about the network effects in the transactional platform of MittAnbud.
+                        <br>
+                        <br>
+                        IN5430
+                    </em>
                 </p>
             </div>
 
+            <div class="box3" id="small-box">
+                    <p class="box3-text">
+                        <strong>"Chosing student programme in a digitized world" - Project in Information Technology and Society</strong>
+                        <br>
+                        <br>
+                        <em>Project and study about the effects a digitized workforce has on how students when they chose their programme.
+                            <br>
+                            <br>
+                            IN3100
+                        </em>
+                    </p>
+                </div>
+            <div class="box4" id="small-box">
+                    <p class="box4-text">
+                        <strong>"Schibsted's onsite support team" - Project in Big and Complex Information Cystems</strong>
+                        <br>
+                        <br>
+                        <em>Project about the socio-technical complexity in Schibsted's onsite support team.
+                            <br>
+                            <br>
+                            IN3290
+                        </em>
+                    </p>
+                </div>
         </div>
-
     </body>
 </html>
