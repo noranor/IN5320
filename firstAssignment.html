@@ -6,6 +6,7 @@
         <title>Mandatoy Assignment</title>
         <style>
             h1{
+                background: white;
                 color: darkred;
                 font-size: 2em;
                 text-align: center;
@@ -16,15 +17,18 @@
                 text-align: center;
                 border-radius: 25px;
             }
-
+            .big-box:first-child, .big-box:last-child{
+                margin: 0 auto;
+            }
             .big-box{
+                position: static;
                 box-sizing: border-box;
                 width: 800px;
-                height: 500px;
-                top: 50%;
-                left: 50%;
-                margin: 0 auto;
-                border: 5px solid darkred;
+                height: 1000px;
+                bottom: 500px;
+                /*top: 50%;
+                left: 50%;*/
+                border: 1em double darkred;
             }
 
             .box1-text{
@@ -46,6 +50,8 @@
                 width: 300px;
                 height: 200px;
                 background: darkred;
+                border: solid darkred;
+                border-radius: 1em 1em 1em 1em;
                 margin: 10 auto;
                 top: 10px;
             }
@@ -72,6 +78,8 @@
                 padding: 5px;
                 background: darkred;
                 color: white;
+                border: solid darkred;
+                border-radius: 0.5em 0.5em 0.5em 0.5em;
             }
 
             .links{
