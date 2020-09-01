@@ -3,35 +3,52 @@
     <head>
         <meta chatset="UTF-8">
         <title>Mandatory Assignment 1.2</title>
-        <script>
-            function addToCountryList(countryName){
-                var ul = countryList.getElementById(country);
-                var li = countryList.createElement("li");
-                var li = li.appendChild(countryList.createTextNode("countryName"));
-                ul.appendChild(li);
+        <style>
+            h1{
+                font-family: Arial;
+                font-size: 2em;
             }
+
+            h2{
+                font-family: Arial;
+                font-size: 1em;
+            }
+
+        </style>
+        <script type="text/javascript">
+            function addList(){
+                var txtVal = document.getElementById("txtVal").value,
+                    listNode = document.getElementById("countryList"),
+                    liNode = document.createElement("li"),
+                    txtNode = document.createTextNode(txtVal),
+                    txtVal = document.getElementById("countryList").value = "";
+
+                
+                liNode.appendChild(txtNode);
+                listNode.appendChild(liNode);
+            }
+
         </script>
     </head>
     <body>
         <header>
             <section>
                 <h1>Countries</h1>
+                <h2>Name some countries and watch the magic happen.</h2>
             </section>
         </header>
 
-        <ul id="countryList">
-        </ul>
-
         <form>
-            <label for="countryName">Country</label>
-            <input type="country" name="country" id="countryName">
+            <input type="country" onfocus="this.value=''" name="country" id="txtVal", placeholder="Country">
+            <button onclick= "addList()" document.getElementById(txtVal.value) ="''">
+                Add
+            </button>
         </form>
         <marquee>
-            <script>addToCountryList(countryName);</script>
+            <script>addList();</script>
         </marquee>
 
-        <button class="add" type="submit">
-                Add
-        </button>
+        <ul id="countryList">
+        </ul>
     </body>
     </html>
