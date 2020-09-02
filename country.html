@@ -4,28 +4,28 @@
         <meta chatset="UTF-8">
         <title>Mandatory Assignment 1.2</title>
         <style>
-            h1{
-                font-family: Arial;
-                font-size: 2em;
-            }
-
-            h2{
-                font-family: Arial;
-                font-size: 1em;
-            }
-
+                h1{
+                    font-family: Arial;
+                    font-size: 2em;
+                }
+    
+                h2{
+                    font-family: Arial;
+                    font-size: 1em;
+                }
+    
         </style>
-        <script type="text/javascript">
-            function addList(){
-                var txtVal = document.getElementById("txtVal").value,
-                    listNode = document.getElementById("countryList"),
-                    liNode = document.createElement("li"),
-                    txtNode = document.createTextNode(txtVal),
-                    txtVal = document.getElementById("countryList").value = "";
+        <script>
+                function addUserInput(){
+                    var input = document.getElementById("userInput").value, 
+                        ul = document.getElementById("countryList"), 
+                        li = document.createElement("li"), 
+                        inputTxt = document.createTextNode(input);
+    
+                    li.appendChild(inputTxt);
+                    ul.appendChild(li);
 
-                
-                liNode.appendChild(txtNode);
-                listNode.appendChild(liNode);
+                    document.getElementById("userInput").value = "";
             }
 
         </script>
@@ -34,21 +34,15 @@
         <header>
             <section>
                 <h1>Countries</h1>
-                <h2>Name some countries and watch the magic happen.</h2>
+                <h2>Write some country names and watch the magic.</h2>
             </section>
         </header>
 
-        <form>
-            <input type="country" onfocus="this.value=''" name="country" id="txtVal", placeholder="Country">
-            <button onclick= "addList()" document.getElementById(txtVal.value) ="''">
-                Add
-            </button>
-        </form>
-        <marquee>
-            <script>addList();</script>
-        </marquee>
+        <input type="country" name="userInput" id="userInput" placeholder="Country">
+        <button onclick="addUserInput()">Add</button>
 
         <ul id="countryList">
+            <li>1</li>
         </ul>
     </body>
     </html>
