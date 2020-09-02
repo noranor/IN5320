@@ -26,6 +26,7 @@
                     
                     const button = document.createElement("button");
                     button.innerHTML=" X";
+                    button.addEventListener("click", event => removeLi(e));
                     
                     li.appendChild(inputTxt);
                     li.appendChild(button);
@@ -33,6 +34,14 @@
 
                     document.getElementById("userInput").value = "";
                 }
+
+                function removeLi(e){
+                    if(e.target.tagName=="li"){
+                        countryList.removeChild(e);
+                        /*e.target.tagName.parentNode.removeChild(e);*/
+                    }
+                }
+
         </script>
     </head>
     <body>
