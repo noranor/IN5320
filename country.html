@@ -16,25 +16,30 @@
     
         </style>
         <script>
+                let countryList = document.getElementById("countryList");
+
                 function addUserInput(){
                     var input = document.getElementById("userInput").value, 
                         ul = document.getElementById("countryList"), 
                         li = document.createElement("li"), 
                         inputTxt = document.createTextNode(input);
-    
+                    
+                    const button = document.createElement("button");
+                    button.innerHTML=" X";
+                    
                     li.appendChild(inputTxt);
+                    li.appendChild(button);
                     ul.appendChild(li);
 
                     document.getElementById("userInput").value = "";
-            }
-
+                }
         </script>
     </head>
     <body>
         <header>
             <section>
                 <h1>Countries</h1>
-                <h2>Write some country names and watch the magic.</h2>
+                <h2>Write some country names and watch the magic happen.</h2>
             </section>
         </header>
 
@@ -42,7 +47,7 @@
         <button onclick="addUserInput()">Add</button>
 
         <ul id="countryList">
-            <li>1</li>
+            <li>1 </li>
         </ul>
     </body>
     </html>
