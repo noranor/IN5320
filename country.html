@@ -18,6 +18,7 @@
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
         <script type="text/javascript">
                 let countryList = document.getElementById("countryList");
+                let inputArray = [];
 
                 function addUserInput(){
                     var input = document.getElementById("userInput").value, 
@@ -25,11 +26,14 @@
                         li = document.createElement("li"), 
                         inputTxt = document.createTextNode(input);
                     
+                    inputArray.push(input);
+                    
                     const button = document.createElement("button");
                     button.innerHTML=" X";
 
                     button.addEventListener("click", function(e){
                         button.parentNode.parentNode.removeChild(button.parentNode);
+                        inputArray.pop(button.parentNode);
                     });
                     
                     li.appendChild(inputTxt);
@@ -38,6 +42,32 @@
 
                     document.getElementById("userInput").value = "";
                 }
+
+                function offlineStorage(inputArray, myFunction){
+                    for( var i = 0; i < inputArray.length; i++){
+                        // Finn ut hvordan man kan sjekke console-loggen.
+                        console.log("Looper gjennom " + inputArray[i] + " i array.");
+                        myFunction(inputArray[i]);
+                    }
+
+                    // The function should be applied to all elements in the list. 
+                    // your function should iterate through the array of strings, 
+                    // and call myFunction with the current string as an argument. 
+                }
+                 
+                // Combine this function with the function created in step 2 to 
+                // populate the list based on what is stored in the browser.
+
+                function myFunction(e){
+                    if (typeof(Storage) !== "undefined") {
+                         // Code for localStorage/sessionStorage. 
+                         localStorage.setItem(e);  // Se w3schools
+                    } else {
+                        // Sorry! No Web Storage support..
+                        //alert()?
+                    }
+                }
+
 
         </script>
     </head>
