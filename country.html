@@ -1,7 +1,7 @@
 <! doctype html>
 <html lang="en">
     <head>
-        <meta chatset="UTF-8">
+        <meta charset="UTF-8">
         <title>Mandatory Assignment 1.2</title>
         <style>
                 h1{
@@ -15,7 +15,8 @@
                 }
     
         </style>
-        <script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+        <script type="text/javascript">
                 let countryList = document.getElementById("countryList");
 
                 function addUserInput(){
@@ -26,20 +27,16 @@
                     
                     const button = document.createElement("button");
                     button.innerHTML=" X";
-                    button.addEventListener("click", event => removeLi(e));
+
+                    button.addEventListener("click", function(e){
+                        button.parentNode.parentNode.removeChild(button.parentNode);
+                    });
                     
                     li.appendChild(inputTxt);
                     li.appendChild(button);
                     ul.appendChild(li);
 
                     document.getElementById("userInput").value = "";
-                }
-
-                function removeLi(e){
-                    if(e.target.tagName=="li"){
-                        countryList.removeChild(e);
-                        /*e.target.tagName.parentNode.removeChild(e);*/
-                    }
                 }
 
         </script>
@@ -56,7 +53,6 @@
         <button onclick="addUserInput()">Add</button>
 
         <ul id="countryList">
-            <li>1 </li>
         </ul>
     </body>
     </html>
