@@ -17,10 +17,13 @@
         </style>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
         <script type="text/javascript">
+                window.sessionStorage;
 
                 let countryList = document.getElementById("countryList");
+                let searchWord = document.getElementById("search");
                 let inputArray = [];
 
+                
                 function addUserInput(){
                     var input = document.getElementById("userInput").value, 
                         ul = document.getElementById("countryList"), 
@@ -32,12 +35,6 @@
                     
                     const button = document.createElement("button");
                     button.innerHTML=" X";
-
-                    button.addEventListener("click", function(e){
-                        button.parentNode.parentNode.removeChild(button.parentNode);
-                        inputArray.splice(inputArray.indexOf(button.parentNode));
-                        console.log(inputArray);
-                    });
                     
                     li.appendChild(inputTxt);
                     li.appendChild(button);
@@ -45,25 +42,45 @@
                     offlineStorage(inputArray, myFunction);
 
                     document.getElementById("userInput").value = "";
+
+                    button.addEventListener("click", function(e){
+                        button.parentNode.parentNode.removeChild(button.parentNode);
+                        inputArray.splice(inputArray.indexOf(button.parentNode));
+                        // Doesn't work
+                        sessionStorage.removeItem(e)
+        
+                        console.log(inputArray);
+                    });
                 }
 
                 function offlineStorage(inputArray, myFunction){
                     for( var i = 0; i < inputArray.length; i++){
-                        console.log("Looper gjennom " + inputArray[i] + " i array.");
+                        console.log("Running myFunction, sessionStorage for " + inputArray[i]);
                         myFunction(inputArray[i]);
                     }
                 }
-                 
-                // Combine this function with the function created in step 2 to 
-                // populate the list based on what is stored in the browser.
 
                 function myFunction(e){
                     if (typeof(Storage) !== "undefined") {
-                         // Code for localStorage/sessionStorage. 
-                         localStorage.setItem(e);  
-                         // Se w3schools
+                         sessionStorage.setItem(e, JSON.stringify(e));  
                     } else {
                         alert("No web storage support.")
+                    }
+                }
+
+                function searchFor(element, searchWord){
+                    var elementTxt = JSON.stringify(element).toLowerCase;
+                    var searchWordTxt = JSON.stringify(searchWord).toLowerCase;
+
+                    for(var i = 0; i < elementTxt.length; i++){
+                        for(var j = 0; j < elementTxt[i].length; j++){
+                            if(elementTxt[i].charAt(j) == searchWordTxt.charAt(j) && elementTxt[i].charAt(j+1) == searchWordTxt.charAt(j+1) && elementTxt[i].charAt(j+2) == searchWordTxt.charAt(j+2)){
+                                return true;
+                                console.log("Search for" + searchWord + " = true");
+                            }else{
+                                return false;
+                            }
+                        }
                     }
                 }
 
@@ -79,8 +96,12 @@
 
         <input type="country" name="userInput" id="userInput" placeholder="Country">
         <button onclick="addUserInput()">Add</button>
+        <br>
+
+        <input type="text" name="search" id="search" placeholder="Search">
+        <button onclick="searchFor(document.getElementById('countryList'), document.getElementById('search').value)">Search</button>
 
         <ul id="countryList">
         </ul>
     </body>
-    </html>
+</html>
