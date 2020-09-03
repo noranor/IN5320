@@ -54,8 +54,8 @@ function searchFor(){
     let searchWord = document.getElementById("searchInput").value;
     let liElements = document.querySelectorAll("li");
 
-    liElements.forEach(function(li){
-        console.log(li.innerHTML); 
+    $("#countryList li").each((id, element) => {
+        console.log(element.innerText.replace("X", ""));
     });
 
 
