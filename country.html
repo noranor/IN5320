@@ -28,13 +28,13 @@
         <button onclick="addUserInput()">Add</button>
         <br>
 
-        <input type="search" name="search" id="searchInput" placeholder="Search">
-        <button onclick="searchFor()">Search</button>
+        <input type="text" id="searchInput" name="search" placeholder="Search">
+        <button onclick="searchFor(document.getElementById('countryList'))" id="searchInput">Submit</button>
 
         <ul id="countryList">
         </ul>
 
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-        <script src ="country.js"></script>
+        <script src ="backup.js"></script>
     </body>
 </html>
