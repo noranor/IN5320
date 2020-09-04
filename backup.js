@@ -1,9 +1,15 @@
 window.sessionStorage;
 
 const countryList = document.getElementById("countryList");
+ // Array with the elements to keep track of elements in Console and add elements in browser storage.
 let inputArray = [];
 
+/*
+    Takes the user input, creates an element (li) and assert the user input to the element. Then the function creates a button that enables a delete function to the element.
 
+    parameters: N/A
+    return: N/A
+*/ 
 function addUserInput(){
     let input = document.getElementById("userInput").value,  
         li = document.createElement("li"), 
@@ -12,52 +18,65 @@ function addUserInput(){
     inputArray.push(input);
     console.log(inputArray);
     
+    // Creates a button with text "X".
     const button = document.createElement("button");
     button.innerHTML=" X";
     
+    // Adds user input to element (li), then button to element and lastly element to a list of all elements, countryList (ul).
     li.appendChild(inputTxt);
     li.appendChild(button);
     countryList.appendChild(li);
 
-    offlineStorage(inputArray, myFunction);
+    offlineStorage(inputArray);
 
+    // Resets the user input, essentially removing input from textbox after processed.
     document.getElementById("userInput").value = "";
 
+
+    // Adds delete-function to the button created above. 
     button.addEventListener("click", function removeButton(e){
         button.parentNode.parentNode.removeChild(button.parentNode);
         inputArray.splice(inputArray.indexOf(button.parentNode));
-        // Doesn't work
+        // Removes element from browser storage.
+        // Doesn't work yet.
         sessionStorage.removeItem(e)
 
         console.log(inputArray);
     });
 }
 
-function offlineStorage(inputArray, myFunction){
+/*
+    Iterates through elements (string) in inputArray and runs function setBrowserStorage() on them.
+    
+    parameters: inputArray - Array[text]
+    return: N/A
+*/ 
+function offlineStorage(inputArray){
     for(let i = 0; i < inputArray.length; i++){
-        console.log("Running myFunction, sessionStorage for " + inputArray[i]);
-        myFunction(inputArray[i]);
+        console.log("Running setBrowserStorage, sessionStorage for " + inputArray[i]);
+        setBrowserStorage(inputArray[i]);
     }
 }
 
-function myFunction(e){
+/*
+    Checks if browser supports for localStorage or sessionStorage. If not browser will return "undefined" to this function and it will not be execued (elements will not be stored). If function do find support for Storage it will add an element (string) to sessionStorage.
+
+    parameters: element (String)
+    return: N/A
+*/
+function setBrowserStorage(element){
     if (typeof(Storage) !== "undefined") {
-         sessionStorage.setItem(e, JSON.stringify(e));  
+         sessionStorage.setItem(element, JSON.stringify(element));  
     } else {
         alert("No web storage support.")
     }
 }
 
 /*
-    <Insert quick summary of what the function does, 1-2 sentences?>
-    parameters:
-        param1 (Type)
-        word (String)
-        poop (ul)
-        ...
-    return:
-        N/A
-        (type)
+    Enables a search function that takes in input from user, iterates through value (String) of elements (li) in countryList (ul) and checks if the user input match any of the elements. Lastly the function retuns all elements that match user input.
+    
+    parameters: countryList (ul)
+    return: matches (Array)
 */
 function searchFor(countryList){
     // Store matching list elements
@@ -67,29 +86,16 @@ function searchFor(countryList){
 
     console.log("I am searching for: ", searchTerm)
     // Loop through country list and find matches
-    for (let i = 0; i < countryList.getElementsByTagName("li").length; i++)
-    {
+    for (let i = 0; i < countryList.getElementsByTagName("li").length; i++){
         let current = countryList.getElementsByTagName("li")[i].firstChild.textContent
-        // Force to lowercase, so that search is not case sensetive!
-        current = current;
+
         console.log("(", i, ")", "Is ",current, "a match?")
-        if (current.toLowerCase().startsWith(searchTerm))
-        {
+
+        // Checks if lowercase-forced current element in countryList starts with same characters as searchTerm.
+        if (current.toLowerCase().startsWith(searchTerm)){
             console.log("Yes!");
             matches.push(current);
         }
     }
-
     console.log(matches)
-    /*
-    for(let i = 0; i < countryList.getElementsByTagName("li").length; i++){
-        //console.log(ul.getElementsByTagName("li")[i].innerText.replace("X", ""));
-        console.log("The searchFor-method should run now. If no message after this it's not working.")
-        if(isSearchTrue(countryList.getElementsByTagName("li")[i].innerText.replace("X", ""), searchWord.value)){
-            console.log("hei");
-            matches.push(countryList.getElementsByTagName("li")[i].innerText.replace("X", ""));
-            console.log("Matches found for " + searchWord.value + ": " + matches);
-        }
-    }
-    */
 }
