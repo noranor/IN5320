@@ -1,4 +1,5 @@
 let inputArray = [];
+let matchesIndex = [];
 const countryList = document.getElementById("countryList");
 
 /**
@@ -29,8 +30,7 @@ function createButtonForLi(li){
  *      @param {ul (Unordered list of <li>)} 
  *      @return: N/A 
  */
-function addNewLiToUl(ul){
-    let input = document.getElementById("userInput").value;
+function addNewLiToUl(ul, input){
     let li = document.createElement("li");
     let inputTxt = document.createTextNode(input);
 
@@ -82,7 +82,6 @@ function offlineStorage(inputArray){
  *      @return {matchesIndex (Integer) Index of <li> in countryList that match the searchTerm} 
  */
 function searchFor(searchTerm){
-    let matchesIndex = [];
 
     for (let i = 0; i < countryList.getElementsByTagName("li").length; i++){
         let current = countryList.getElementsByTagName("li")[i].firstChild.textContent;
@@ -107,26 +106,62 @@ function searchFor(searchTerm){
  *      @param {searchTerm (String) - User input that activates the function}
  *      @return N/A
  */
-function displayList(searhTerm){
-    searchTerm.addEventListener("keyup", function(e){
-        let $allLi = $('#countryList').children();
-        let indexes = searchFor(searchTerm);
-        $allLi.find(indexes).css('display', '');
-    });
-
+function displayList(indicies){
+    console.log("Enters function displayList");
+    for(let i = 0; i < countryList.getElementsByTagName("li").length; i++){
+        console.log("Running displayList for-loop");
+        indicies.forEach((index) =>{
+            console.log("Running displayList forEach-loop");
+            if(i != index){
+                console.log("Trying to hide an element");
+                $('#countryList li').css("display:", "hidden");
+            }
+        })
+    }
 }
 
-/**
- *  Runs the entire script :-)
- */
-function runScript(){
-    addNewLiToUl(countryList);
-    console.log("CHECK");
+function generateCountryList(inputArray){
+    inputArray.forEach((input) =>{
+        addNewLiToUl(countryList, input);
+    });
+}
+
+/// FORSLAG
+
+// Does things when "add" button has been pressed
+function addButtonEventHandler(){
+    let input = document.getElementById("userInput").value;
+    addNewLiToUl(countryList, input);
+    // lage countrylist basert på inputarray
+    console.log("Added new li");
+
     document.getElementById("userInput").value = "";
+}
 
-    
-    displayList(searchTerm); 
-    
-    console.log("CHECK2");
+// Does things when search field has been changed in some way
+function searchFieldEventHandler(){
+    let searchTerm = document.getElementById("searchInput").value.toLowerCase();
+    indicies = searchFor(searchTerm);
+    displayList(indicies);
+}
 
+// Function which updates which items are going to be displayed to the user
+// Takes arguement indices = [0, 1, ..., N-1] or indices = [4] or indices = []
+// Must handle empty list being due to either no search term being present OR search yielding no match 
+function updateListDisplay(indices, searchTerm){
+    if (indices.length == 0  && searchTerm == ""){
+        console.log("Vanlig countrylist");
+        // Display COUNTRY LIST!!!
+    }
+    else if (indices.length == 0) {
+        console.log("Ingen matcher");
+        countryList.style.display = "hidden";
+
+        // No matches! display nothing
+    }else{
+        console.log("Matcher");
+        displayList(indicies);
+
+        // Display matching terms (using the indices list), yielding a subset of countryList
+    }
 }
