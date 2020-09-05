@@ -114,7 +114,7 @@ function displayList(indicies){
             console.log("Running displayList forEach-loop");
             if(i != index){
                 console.log("Trying to hide an element");
-                $('#countryList li').css("display:", "hidden");
+                countryList.getElementsByTagName("li")[i].style.display = "none";
             }
         })
     }
