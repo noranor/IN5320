@@ -106,16 +106,34 @@ function searchFor(searchTerm){
  *      @param {searchTerm (String) - User input that activates the function}
  *      @return N/A
  */
-function displayList(indicies){
+function displaySelectedList(indicies){
     console.log("Enters function displayList");
     for(let i = 0; i < countryList.getElementsByTagName("li").length; i++){
+
         console.log("Running displayList for-loop");
         indicies.forEach((index) =>{
+
             console.log("Running displayList forEach-loop");
             if(i != index){
+
                 console.log("Trying to hide an element");
                 countryList.getElementsByTagName("li")[i].style.display = "none";
             }
+        })
+    }
+}
+
+function displayEntireList(indicies){
+    console.log("Enters function displayList");
+    for(let i = 0; i < countryList.getElementsByTagName("li").length; i++){
+
+        console.log("Running displayList for-loop");
+        indicies.forEach((index) =>{
+
+            console.log("Running displayList forEach-loop");
+
+                console.log("Trying to hide an element");
+                countryList.getElementsByTagName("li")[i].style.display = "none";
         })
     }
 }
@@ -149,19 +167,32 @@ function searchFieldEventHandler(){
 // Takes arguement indices = [0, 1, ..., N-1] or indices = [4] or indices = []
 // Must handle empty list being due to either no search term being present OR search yielding no match 
 function updateListDisplay(indices, searchTerm){
+    let shownList;
+    // 1. Viser alt
     if (indices.length == 0  && searchTerm == ""){
         console.log("Vanlig countrylist");
-        // Display COUNTRY LIST!!!
-    }
-    else if (indices.length == 0) {
-        console.log("Ingen matcher");
-        countryList.style.display = "hidden";
 
-        // No matches! display nothing
+    // 2. Viser ingenting
+    }else if (indices.length == 0) {
+        console.log("Ingen matcher");
+
+    // 3. No matches! display nothing
     }else{
         console.log("Matcher");
-        displayList(indicies);
+        displaySelectedList(indicies);
 
         // Display matching terms (using the indices list), yielding a subset of countryList
     }
 }
+/*
+MÅ GJØRES:
+
+Lage et eget array for updateListDisplay. 
+- Arrayet er de <li>-nodene som vises på skjermen. 
+
+- 1. Arrayet vil vise seg med all input/<li> dersom søkefeltet er tomt og/eller det ikke er noen matcher på søkefelt - Ikke søkt etter noe.
+- 2. Arrayet vil vise seg helt tomt dersom det ikke er noen matcher.
+- 3. Arrayet vil vise de <li>-nodene som matcher dersom søkefeltet gir treff.
+
+Endre konstanten countryList til at den skal være udefinert. Se over metoder om den blir kastet inn i sin helhet uten å være ul-parameter. Dersom det heller brukes parameter, gjør det funksjonene mer generelle.
+*/ 
