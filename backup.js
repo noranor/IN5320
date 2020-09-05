@@ -78,23 +78,29 @@ function setBrowserStorage(element){
     parameters: countryList (ul)
     return: matches (Array)     ------ ????
 */
-function searchFor(countryList){
+function searchFor(countryList, searchTerm){
     // Store matching list elements
     let matches = [];
     // Fetch the search term value from the search input box, and convert to lower case
-    let searchTerm = document.getElementById("searchInput").value.toLowerCase();
+    //let searchTerm = document.getElementById("searchInput").value.toLowerCase();
 
     console.log("I am searching for: ", searchTerm)
     // Loop through country list and find matches
     for (let i = 0; i < countryList.getElementsByTagName("li").length; i++){
-        let current = countryList.getElementsByTagName("li")[i].firstChild.textContent
+        let current = countryList.getElementsByTagName("li")[i].firstChild;
+        //let currentLowerCase = current.toLowerCase();
 
-        console.log("(", i, ")", "Is ",current, "a match?")
+        console.log("(", i, ")", "Is ",current.textContent, "a match?");
 
-        // Checks if lowercase-forced current element in countryList starts with same characters as searchTerm.
-        if (current.toLowerCase().startsWith(searchTerm)){
+        // Checks if lowercase-forced current element in countryList starts with same characters as searchTerm and shows the element if it does.
+        if (current.textContent.toLowerCase().startsWith(searchTerm)){
             console.log("Yes!");
-            matches.push(current);
+            matches.push(current.textContent);
+            if(current.textContent.toLowerCase().indexOf(searchTerm) == 0){
+                current.style.display="none";
+            }else{
+                current.display="none";
+            }
         }
     }
     console.log(matches)
@@ -104,16 +110,13 @@ function searchFor(countryList){
     Function that activates when a keyboard key is released in the search input field. The function will run the searchFor()-function.
 */ 
 $('#searchInput').keyup(function() {
-    let input = this.value.toLowerCase(),
-        length  = this.value.length;
+    let input = this.value.toLowerCase();
+        //length  = this.value.length;
 
-    $('#countryList>li').each(function () {
-        searchFor(document.getElementById("countryList"));
-        let liText = $(this).text(),
+    searchFor(document.getElementById("countryList"), input);
+    //let liText = $(this).text(),
             //li = $(this),
-            liTextLowerCase = liText.toLowerCase(),
-            htmlR = liText.substr(0, length);
-        (liTextLowerCase.indexOf(input) == 0) ? $(this).html(htmlR).show() : $(this).hide();
-    });
-
+            //htmlR = current.substr(0, length);
+        //liTextLowerCase.indexOf(input) == 0) ? $(this).html(htmlR).show() : $(this).hide();
+    //});
 });
