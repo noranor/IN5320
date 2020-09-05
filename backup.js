@@ -1,7 +1,8 @@
 window.sessionStorage;
 
 const countryList = document.getElementById("countryList");
- // Array with the elements to keep track of elements in Console and add elements in browser storage.
+const searchList = document.getElementById("searchList");
+  // Array with the elements to keep track of elements in Console and add elements in browser storage.
 let inputArray = [];
 
 /*
@@ -78,45 +79,50 @@ function setBrowserStorage(element){
     parameters: countryList (ul)
     return: matches (Array)     ------ ????
 */
-function searchFor(countryList, searchTerm){
+function searchFor(countryList){
     // Store matching list elements
     let matches = [];
     // Fetch the search term value from the search input box, and convert to lower case
-    //let searchTerm = document.getElementById("searchInput").value.toLowerCase();
+    let searchTerm = document.getElementById("searchInput").value.toLowerCase();
 
-    console.log("I am searching for: ", searchTerm)
     // Loop through country list and find matches
     for (let i = 0; i < countryList.getElementsByTagName("li").length; i++){
-        let current = countryList.getElementsByTagName("li")[i].firstChild;
-        //let currentLowerCase = current.toLowerCase();
+        let current = countryList.getElementsByTagName("li")[i].firstChild.textContent;
+        
+        let currentLowerCase = current.toLowerCase();
 
-        console.log("(", i, ")", "Is ",current.textContent, "a match?");
+        console.log("(", i, ")", "Is " + current + " a match?");
 
         // Checks if lowercase-forced current element in countryList starts with same characters as searchTerm and shows the element if it does.
-        if (current.textContent.toLowerCase().startsWith(searchTerm)){
+        if (currentLowerCase.startsWith(searchTerm)){
             console.log("Yes!");
-            matches.push(current.textContent);
+            matches.push(current);
+
+            let li = document.createElement("li"),
+                inputTxt = document.createTextNode(current);
+    
+            // Creates a button with text "X".
+            const button = document.createElement("button");
+            button.innerHTML=" X";
+    
+            // Adds user input to element (li), then button to element and lastly element to a list of all elements, countryList (ul).
+            li.appendChild(inputTxt);
+            li.appendChild(button);
+            searchList.appendChild(li);
+
+            button.addEventListener("click", function removeButton(e){
+                button.parentNode.parentNode.removeChild(button.parentNode);
+                inputArray.splice(inputArray.indexOf(button.parentNode));
+            });            
+            /*
             if(current.textContent.toLowerCase().indexOf(searchTerm) == 0){
                 current.style.display="none";
             }else{
                 current.display="none";
-            }
+            }*/
+
         }
     }
     console.log(matches)
 }
 
-/*
-    Function that activates when a keyboard key is released in the search input field. The function will run the searchFor()-function.
-*/ 
-$('#searchInput').keyup(function() {
-    let input = this.value.toLowerCase();
-        //length  = this.value.length;
-
-    searchFor(document.getElementById("countryList"), input);
-    //let liText = $(this).text(),
-            //li = $(this),
-            //htmlR = current.substr(0, length);
-        //liTextLowerCase.indexOf(input) == 0) ? $(this).html(htmlR).show() : $(this).hide();
-    //});
-});
