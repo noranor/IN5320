@@ -38,7 +38,7 @@ function addUserInput(){
         button.parentNode.parentNode.removeChild(button.parentNode);
         inputArray.splice(inputArray.indexOf(button.parentNode));
         // Removes element from browser storage.
-        // Doesn't work yet.
+        // FIX: Doesn't work yet.
         sessionStorage.removeItem(e)
 
         console.log(inputArray);
@@ -59,7 +59,7 @@ function offlineStorage(inputArray){
 }
 
 /*
-    Checks if browser supports for localStorage or sessionStorage. If not browser will return "undefined" to this function and it will not be execued (elements will not be stored). If function do find support for Storage it will add an element (string) to sessionStorage.
+    Checks if browser supports for localStorage or sessionStorage. If not browser will return "undefined" to this function and it will not be execued (elements will not be stored). If function does find support for Storage it will add an element (string) to sessionStorage.
 
     parameters: element (String)
     return: N/A
@@ -76,7 +76,7 @@ function setBrowserStorage(element){
     Enables a search function that takes in input from user, iterates through value (String) of elements (li) in countryList (ul) and checks if the user input match any of the elements. Lastly the function retuns all elements that match user input.
     
     parameters: countryList (ul)
-    return: matches (Array)
+    return: matches (Array)     ------ ????
 */
 function searchFor(countryList){
     // Store matching list elements
@@ -99,3 +99,21 @@ function searchFor(countryList){
     }
     console.log(matches)
 }
+
+/*
+    Function that activates when a keyboard key is released in the search input field. The function will run the searchFor()-function.
+*/ 
+$('#searchInput').keyup(function() {
+    let input = this.value.toLowerCase(),
+        length  = this.value.length;
+
+    $('#countryList>li').each(function () {
+        searchFor(document.getElementById("countryList"));
+        let liText = $(this).text(),
+            //li = $(this),
+            liTextLowerCase = liText.toLowerCase(),
+            htmlR = liText.substr(0, length);
+        (liTextLowerCase.indexOf(input) == 0) ? $(this).html(htmlR).show() : $(this).hide();
+    });
+
+});
