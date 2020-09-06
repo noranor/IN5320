@@ -1,6 +1,6 @@
 let inputArray = [];
 let matchesIndex = [];
-const countryList = document.getElementById("countryList");
+const countryList = document.querySelector('#countryList');
 /*const url = {
     url: 'https://d6wn6bmjj722w.population.io/1.0/population/Norway/today-and-tomorrow/',
     accept: 'application/json'
@@ -29,26 +29,6 @@ function createButtonForLi(li){
 
     return button;
 }
-
-/*function updateDisplay(verse){
-    // start our function by constructing a relative URL pointing to the text file we want to load,
-    verse = verse.replace(" ", "");
-    verse = verse.toLowerCase();
-    let url = verse + '.txt';
-
-    // .then-method is a part of "Promises", a modern JS feature for performing asynchronous operations. fetch() return a promise.
-    // "fetch the resource located at URL" 
-    url.then(function(response) {
-        // ONLOAD: text is also a promise, so new .then is attached.
-        // define a function to receive the raw text that the text() promise resolves to.
-        // "then run the specified function when the promise resolves" 
-        response.text().then(function(text) {
-            // set the <pre> element's text content to the text value.
-          poemDisplay.textContent = text;
-        });
-      })
-}*/
-
 
 /**
  *      Takes the user input, creates an element (li) and set the user input to the element.
