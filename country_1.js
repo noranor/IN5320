@@ -14,7 +14,12 @@ function addButtonEventHandler(){
    
     let input = document.getElementById("userInput").value;
     inputArray.push(input);
-    $.getJSON("https://d6wn6bmjj722w.population.io/1.0/population/" + input + "/today-and-tomorrow/").done(function(data){
+    console.log("inputArray -> ", inputArray);
+
+    document.getElementById("userInput").value = "";
+    display();
+}
+    /*$.getJSON("https://d6wn6bmjj722w.population.io/1.0/population/" + input + "/today-and-tomorrow/").done(function(data){
             // According to the API format. 
         let today = data.total_population[0].population;
         let tomorrow = data.total_population[1].population;
@@ -23,11 +28,8 @@ function addButtonEventHandler(){
         countryList.innerHTML += "<li>" + input + " - " + today + "<button id='deleteButton'>X</button> </li>";
 
         offlineStorage(inputArray);
-    })
-    document.getElementById("userInput").value = "";
-    display();
-    //document.getElementById("userInput").value = "";
-}
+    })*/
+    
 /**
  *      This function initiates what will happen when the user types in the search field. It will 
  *      intitate the updateDisplay-function based on matched search.
@@ -37,23 +39,24 @@ function addButtonEventHandler(){
  *      @return N/A
  */
 function searchFieldEventHandler(searchWord){
+    //matchList = [];
     // THIS FUNCTION DOES NOT!!! TOUCH COUNTRY LIST
 
     searchWord.addEventListener("keyup", function(){
         if(searchWord != ""){
             searchWordL = searchWord.value.toLowerCase();
             matchList = searchFor(searchWordL);
-            updateDisplay(matchList);
+            display();
         }
     });
-
-    display();
+    //document.getElementById("searchInput").value = "";
 }
 
 function display(){
+    countryList.innerHTML = "";
      /// THIS FUNCTION ONLYY!!! CREATES COUNTRY LIST, BASED ON INTERNAL LIST. MAY PRINT SUBSET (MATCHED)
     // if search box is empty
-    if(searchWord.value == "" && matchList.length == 0){
+    if(matchList.length == 0){
         inputArray.forEach(function(stringInput){
             $.getJSON("https://d6wn6bmjj722w.population.io/1.0/population/" + stringInput + "/today-and-tomorrow/").done(function(data){
             // According to the API format. 
@@ -65,19 +68,20 @@ function display(){
             })
         })
     }
-      // DRAW LIST SHOWING ALL COUNTRIES --- NO EVENT HANDLERS
+      // DRAW LIST SHOWING ALL COUNTRIES --- NO EVENT HANDLERSs
     // if search box is not empty, and there are matching results
     if(searchWord != "" && matchList.length != 0){
-        matchList.forEach(function(index){
-            $.getJSON("https://d6wn6bmjj722w.population.io/1.0/population/" + inputArray[index] + "/today-and-tomorrow/").done(function(data){
+        matchList.forEach(function(matchingInput){
+            $.getJSON("https://d6wn6bmjj722w.population.io/1.0/population/" + matchingInput + "/today-and-tomorrow/").done(function(data){
             // According to the API format. 
                 let today = data.total_population[0].population;
                 let tomorrow = data.total_population[1].population;
-                console.log("Population for ", inputArray[index], " is ", today);
+                console.log("Population for ", matchingInput, " is ", today);
 
-                countryList.innerHTML += "<li>" + inputArray[index] + " - " + today + "<button id='deleteButton'>X</button> </li>";
+                countryList.innerHTML += "<li>" + matchingInput + " - " + today + "<button id='deleteButton'>X</button> </li>";
             })
         })
+        matchList = [];
         // DRAW LIST SHOWING MATCHED COUNTRIES --- NO EVENT HANDLERS
     }
     // if search box is empty and there are no matching results
@@ -101,7 +105,8 @@ function hideAllElements(){
  *      @param {matchList (Array - Integer) - Array of indices where search match has been found} 
  *      @return N/A
  */
-function updateDisplay(matchList){
+/*function updateDisplay(matchList){
+
     console.log("+++Updating display")
     let list = countryList.getElementsByTagName("li");
     console.log(list);
@@ -114,7 +119,7 @@ function updateDisplay(matchList){
             list[i].style.visibility = "hidden";
         }
     }
-}
+}*/
 /**
  *      Function that checks if the list-element mathes a search input. Returns true if it does, 
  *      false if it doesn't.
@@ -139,17 +144,13 @@ function checkSearchTerm(li, searchWord){
  *      @return {matches (Integer) - Index of <li> in countryList that match the searchTerm} 
  */
 function searchFor(searchWord){
-    let list = countryList.getElementsByTagName("li");
+    //let list = countryList.getElementsByTagName("li");
     //let matches = [];
-
-    for (let i = 0; i < list.length; i++){
-        console.log("checking: ", i)
-        let current = list[i].textContent;
-
-        if(checkSearchTerm(current, searchWord) == true){
-            matchList.push(i);
+    inputArray.forEach(function(input){
+        if(checkSearchTerm(input, searchWord) == true){
+            matchList.push(input);
         }
-    }
+    })
     console.log("Matches: ",matchList)
     return matchList;
 }
