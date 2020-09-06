@@ -1,6 +1,11 @@
 let inputArray = [];
 let matchesIndex = [];
 const countryList = document.getElementById("countryList");
+/*const url = {
+    url: 'https://d6wn6bmjj722w.population.io/1.0/population/Norway/today-and-tomorrow/',
+    accept: 'application/json'
+}*/
+let pop = 0;
 
 /**
  *      This function creates a button with the text "X". Gives the button a delete functionality 
@@ -24,6 +29,27 @@ function createButtonForLi(li){
 
     return button;
 }
+
+/*function updateDisplay(verse){
+    // start our function by constructing a relative URL pointing to the text file we want to load,
+    verse = verse.replace(" ", "");
+    verse = verse.toLowerCase();
+    let url = verse + '.txt';
+
+    // .then-method is a part of "Promises", a modern JS feature for performing asynchronous operations. fetch() return a promise.
+    // "fetch the resource located at URL" 
+    url.then(function(response) {
+        // ONLOAD: text is also a promise, so new .then is attached.
+        // define a function to receive the raw text that the text() promise resolves to.
+        // "then run the specified function when the promise resolves" 
+        response.text().then(function(text) {
+            // set the <pre> element's text content to the text value.
+          poemDisplay.textContent = text;
+        });
+      })
+}*/
+
+
 /**
  *      Takes the user input, creates an element (li) and set the user input to the element.
  * 
@@ -32,12 +58,22 @@ function createButtonForLi(li){
  */
 function addNewLiToUl(ul, input){
     let li = document.createElement("li");
+    li.className = "countryInput";
     let inputTxt = document.createTextNode(input);
 
     inputArray.push(input);
 
     li.appendChild(inputTxt);
     createButtonForLi(li);
+
+    // .done() for success
+    $.getJSON("https://d6wn6bmjj722w.population.io/1.0/population/" + input + "/today-and-tomorrow/").done(function(data){
+        // According to the API format. 
+        let today = data.total_population[0].population;
+        let tomorrow = data.total_population[1].population;
+
+        console.log(today);
+    })
     ul.appendChild(li);
 
     offlineStorage(inputArray);
@@ -56,9 +92,7 @@ function setBrowserStorage(element){
    } else {
        alert("No web storage support.")
    }
-
 }
-
 /**
  *      Iterates through elements (string) in inputArray and runs function setBrowserStorage() 
  *      on them.
@@ -82,69 +116,48 @@ function offlineStorage(inputArray){
  *      @return {matchesIndex (Integer) Index of <li> in countryList that match the searchTerm} 
  */
 function searchFor(searchTerm){
+    searchTerm = searchTerm.value.toLowerCase();
+    let list = countryList.getElementsByTagName("li");
 
-    for (let i = 0; i < countryList.getElementsByTagName("li").length; i++){
-        let current = countryList.getElementsByTagName("li")[i].firstChild.textContent;
-        
-        let currentLowerCase = current.toLowerCase();
+    for (let i = 0; i < list.length; i++){
+        let current = list[i].firstChild.textContent;
+            //let currentLowerCase = current.toLowerCase();
 
         console.log("(", i, ")", "Is " + current + " a match?");
 
-        if (currentLowerCase.startsWith(searchTerm)){
-            console.log("Yes!");
+        if (current.startsWith(searchTerm) && searchTerm != ""){
+            console.log("CHECK");
+            list[i].style.display = "list-item";
+            console.log("Showing - " + current);
+        }else if(current.startsWith(searchTerm) == false){
+            console.log("CHECK2");
+            console.log("Hiding - " + current);
+            list[i].style.visibility = "hidden";
+        }else{
+            // DOESNT WORK
+            console.log("CHECK3");
+            $("countryList li").show();
+        }
+    }
+}
+
+
+function getMatchesIndex(searchTerm){
+    searchTerm = searchTerm.value.toLowerCase();
+    let list = countryList.getElementsByTagName("li");
+    for (let i = 0; i < list.length; i++){
+        let current = list[i].firstChild.textContent;
+        let currentLowerCase = current.toLowerCase();
+
+        console.log("(", i, ")", "Is " + current + " a match?");
+        if (currentLowerCase.startsWith(searchTerm.toLowerCase())){
+            console.log("YES!");
             matchesIndex.push(i);
-            console.log("Indexes of marching elements: " + matchesIndex);
         }
     }
     return matchesIndex;
 }
 
-/**
- *      If user input in the search field this function will activate and alter the list displayed 
- *      on the screen according to the user input.
- * 
- *      @param {searchTerm (String) - User input that activates the function}
- *      @return N/A
- */
-function displaySelectedList(indicies){
-    console.log("Enters function displayList");
-    for(let i = 0; i < countryList.getElementsByTagName("li").length; i++){
-
-        console.log("Running displayList for-loop");
-        indicies.forEach((index) =>{
-
-            console.log("Running displayList forEach-loop");
-            if(i != index){
-
-                console.log("Trying to hide an element");
-                countryList.getElementsByTagName("li")[i].style.display = "none";
-            }
-        })
-    }
-}
-
-function displayEntireList(indicies){
-    console.log("Enters function displayList");
-    for(let i = 0; i < countryList.getElementsByTagName("li").length; i++){
-
-        console.log("Running displayList for-loop");
-        indicies.forEach((index) =>{
-
-            console.log("Running displayList forEach-loop");
-
-                console.log("Trying to hide an element");
-                countryList.getElementsByTagName("li")[i].style.display = "none";
-        })
-    }
-}
-
-function generateCountryList(inputArray){
-    inputArray.forEach((input) =>{
-        addNewLiToUl(countryList, input);
-    });
-}
-
-/// FORSLAG
 
 // Does things when "add" button has been pressed
 function addButtonEventHandler(){
@@ -157,33 +170,40 @@ function addButtonEventHandler(){
 }
 
 // Does things when search field has been changed in some way
-function searchFieldEventHandler(){
-    let searchTerm = document.getElementById("searchInput").value.toLowerCase();
-    indicies = searchFor(searchTerm);
-    displayList(indicies);
+function searchFieldEventHandler(searchTerm){
+    searchTerm.addEventListener("keyup", function(){
+        //let searchTerm = document.getElementById("searchInput");
+        searchFor(searchTerm);
+    });
 }
 
 // Function which updates which items are going to be displayed to the user
 // Takes arguement indices = [0, 1, ..., N-1] or indices = [4] or indices = []
 // Must handle empty list being due to either no search term being present OR search yielding no match 
+
 function updateListDisplay(indices, searchTerm){
-    let shownList;
     // 1. Viser alt
     if (indices.length == 0  && searchTerm == ""){
         console.log("Vanlig countrylist");
+        for(let i = 0; i < countryList.length; i++){
+            countryList[i].style.display = "list-item";
+        }
 
     // 2. Viser ingenting
     }else if (indices.length == 0) {
         console.log("Ingen matcher");
+        searchFor(searchTerm);
+        //searchFieldEventHandler();
 
     // 3. No matches! display nothing
     }else{
         console.log("Matcher");
-        displaySelectedList(indicies);
+        searchFor(searchTerm);
 
         // Display matching terms (using the indices list), yielding a subset of countryList
     }
 }
+
 /*
 MÅ GJØRES:
 
@@ -194,5 +214,4 @@ Lage et eget array for updateListDisplay.
 - 2. Arrayet vil vise seg helt tomt dersom det ikke er noen matcher.
 - 3. Arrayet vil vise de <li>-nodene som matcher dersom søkefeltet gir treff.
 
-Endre konstanten countryList til at den skal være udefinert. Se over metoder om den blir kastet inn i sin helhet uten å være ul-parameter. Dersom det heller brukes parameter, gjør det funksjonene mer generelle.
-*/ 
+Endre konstanten countryList til at den skal være udefinert. Se over metoder om den blir kastet inn i sin helhet uten å være ul-parameter. Dersom det heller brukes parameter, gjør det funksjonene mer generelle.*/
