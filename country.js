@@ -166,7 +166,7 @@ function updateListDisplay(indices, searchTerm){
     if (indices.length == 0  && searchTerm == ""){
         console.log("Vanlig countrylist");
         for(let i = 0; i < countryList.length; i++){
-            countryList[i].style.display = "list-item";
+            countryList.style.display = "list-item";
         }
 
     // 2. Viser ingenting
