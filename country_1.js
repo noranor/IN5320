@@ -37,12 +37,12 @@ function updateDisplay(matchList){
     let list = countryList.getElementsByTagName("li");
     console.log(list);
     for(let i = 0; i < list.length; i++){
-        if(matchList.includes(list[i])){
+        if(matchList.includes(i)){
             console.log("Showing ",list[i]);
             list[i].style.display = "list-item";
         }else{
             console.log("Hiding ",list[i]);
-            list[i].style.display = "hidden";
+            list[i].style.visibility = "hidden";
         }
     }
 }
@@ -69,7 +69,7 @@ function searchFor(searchWord){
         let current = list[i].textContent;
         //console.log(i + ") Er " + current + " en match?");
         if(checkSearchTerm(current, searchWord) == true){
-            matches.push(current);
+            matches.push(i);
         }
     }
     //console.log("Exiting search for")
