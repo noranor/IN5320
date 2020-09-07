@@ -5,8 +5,8 @@ let matchList = [];
 
 /**
  *      This function initiates what will happen when user adds countries to list. The population 
- *      API will be fetched, data from the API to the corresponding country will be contected to the 
- *      country added.
+ *      API will be fetched, data from the API to the corresponding country will be contected to 
+ *      the country added.
  */
 function addButtonEventHandler(){
    
@@ -17,18 +17,9 @@ function addButtonEventHandler(){
     console.log("inputArray -> ", inputArray);
 
     document.getElementById("userInput").value = "";
+    offlineStorage(inputArray);
     display();
 }
-    /*$.getJSON("https://d6wn6bmjj722w.population.io/1.0/population/" + input + "/today-and-tomorrow/").done(function(data){
-            // According to the API format. 
-        let today = data.total_population[0].population;
-        let tomorrow = data.total_population[1].population;
-        console.log("Population for ", input, " is ", today);
-
-        countryList.innerHTML += "<li>" + input + " - " + today + "<button id='deleteButton'>X</button> </li>";
-
-        offlineStorage(inputArray);
-    })*/
     
 /**
  *      This function initiates what will happen when the user types in the search field. It will 
@@ -42,12 +33,13 @@ function searchFieldEventHandler(searchWord){
     //matchList = [];
     // THIS FUNCTION DOES NOT!!! TOUCH COUNTRY LIST
 
-    searchWord.addEventListener("keyup", function(){
-        if(searchWord != ""){
-            searchWordL = searchWord.value.toLowerCase();
-            matchList = searchFor(searchWordL);
-            display();
-        }
+    searchWord.addEventListener("keydown", function(){
+        searchWordL = searchWord.value.toLowerCase();
+        matchList = searchFor(searchWordL);
+        display();
+        
+        /*if(searchWord != ""){
+        }*/
     });
     //document.getElementById("searchInput").value = "";
 }
@@ -56,7 +48,7 @@ function display(){
     countryList.innerHTML = "";
      /// THIS FUNCTION ONLYY!!! CREATES COUNTRY LIST, BASED ON INTERNAL LIST. MAY PRINT SUBSET (MATCHED)
     // if search box is empty
-    if(matchList.length == 0){
+    if(searchWord == undefined && matchList.length == 0){
         inputArray.forEach(function(stringInput){
             $.getJSON("https://d6wn6bmjj722w.population.io/1.0/population/" + stringInput + "/today-and-tomorrow/").done(function(data){
             // According to the API format. 
@@ -85,19 +77,14 @@ function display(){
         // DRAW LIST SHOWING MATCHED COUNTRIES --- NO EVENT HANDLERS
     }
     // if search box is empty and there are no matching results
-    if(searchWord != null && matchList.length == 0){
-        countryList.innerHTML = "";
+    if(searchWord != undefined || searchWord != "" && matchList.length == 0){
+        console.log("NO match on searchWord ", searchWord)
+        for(let i = 0; i < countryList.getElementsByTagName("li").length; i ++){
+            countryList.getElementsByTagName("li")[i].innerHTML += "";
+        }
         // DONT DRAW A LIST AT ALL!!! --- NO EVENT HANDLERS
     }
 }
-/*
-function hideAllElements(){
-    let list = countryList.getElementsByTagName("li");
-    for(let i = 0; i < list.length; i++){
-        list[i].style.visibility = "hidden";
-    }
-    
-}*/
 
 /**
  *      This function alter the display of list elements based on search matches.
@@ -161,7 +148,8 @@ function searchFor(searchWord){
 $("#countryList").on('click', '#deleteButton', function(e){
     $(this).parent().remove();
     inputArray.splice($(this).parent());
-    sessionStorage.removeItem($(this).parent());
+    let remove = $(this).parent().text();
+    sessionStorage.removeItem(remove);
 });
 /**
  *      Checks if browser supports for localStorage or sessionStorage. If not browser will return
@@ -187,7 +175,7 @@ function setBrowserStorage(element){
  */
 function offlineStorage(inputArray){
     for(let i = 0; i < inputArray.length; i++){
-        console.log("Running setBrowserStorage, sessionStorage for ", inputArray[i]);
+        console.log("Running sessionStorage for ", inputArray[i]);
         setBrowserStorage(inputArray[i]);
     }
 
