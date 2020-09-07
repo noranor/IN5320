@@ -11,29 +11,35 @@ function addButtonEventHandler(){
     offlineStorage(inputArray);
 
     document.getElementById("userInput").value = "";
-    display(inputArray);
+    chooseDisplay("")
 }
 
 function searchFieldEventHandler(search){
-    searchWord = search;
-    console.log("---- Matchlist før sletting: ", matchList);
+    searchWord = search.value;
     matchList = [];
-    console.log("---- Matchlist ETTER sletting: ", matchList);
 
     form.addEventListener("input", chooseDisplay(searchWord));
 }
 
-function chooseDisplay(searchWord){
-    if(searchWord.length != 0 && searchWord != ""){
-        searchFor(searchWord.value.toLowerCase());
+// input__str == string!!!
+function chooseDisplay(input_str){
+    console.log("Current searchWord: ", input_str);
+    // Hvis det er et søk
+    if(input_str.length != 0){
+        searchFor(input_str.toLowerCase());
         console.log("Displaying matchList: ", matchList);
         display(matchList); 
-    }else{
+    
+    // Hvis søkefeltet er tomt
+    }else if(input_str == ""){
         console.log("Displaying inputArray: ", inputArray);
         display(inputArray);
+
+    // Hvis det ikke er noen treff på søk
+    }else if(matchList.length == 0 && input_str.length != 0){
+        resetDisplay();
     }
 }
-
 
 
 function resetDisplay(){
@@ -43,39 +49,52 @@ function resetDisplay(){
 }
 
 function display(array){
+    
     resetDisplay();
 
     array.forEach(input =>{
         $.getJSON("https://d6wn6bmjj722w.population.io/1.0/population/" + input + "/today-and-tomorrow/").done(function(data){
             let today = data.total_population[0].population;
             let tomorrow = data.total_population[1].population;
+            console.log("Tomorrow: ", tomorrow);
+            let populationEachMillisecond = eachMillisecond(today, tomorrow);
+            //populationUpdate(today, populationEachMillisecond);
+
+            // There are 1000 millisecons each second.
+            //window.setInterval(populationUpdate(today, populationEachMillisecond), 1000);
+                countryList.innerHTML += "<li id='country'>" + input + " - " + today + "<button id='deleteButton'>X</button> </li>";
             
-            countryList.innerHTML += "<li id='country'>" + input + " - " + today + "<button id='deleteButton'>X</button> </li>";
+            //countryList.innerHTML += "<li id='country'>" + input + " - " + today + "<button id='deleteButton'>X</button> </li>";
         })
     })
+    console.log(document.querySelectorAll("#countryList li"));
+}
+
+function populationUpdate(today, populationEachMillisecond){
+    population = today + populationEachMillisecond;
+}
+
+function eachMillisecond(today, tomorrow){
+    let allNewPopInADay = tomorrow - today;
+    console.log("All new pop in a day: ", allNewPopInADay);
+    // There are 86.400 seconds in 24 hours.
+    let popEachMillisecond = allNewPopInADay / 86400;
+    console.log("each mili; ", parseFloat(popEachMillisecond.toFixed(2)));
+    return parseFloat(popEachMillisecond.toFixed(2));
 }
 
 function checkSearchTerm(li, searchWord){
     if(searchWord != ""){
         return li.toLowerCase().startsWith(searchWord); 
-    }
-}
-    /*
-    if(searchWord != "" || searchWord != undefined){
-        if(li.toLowerCase().startsWith(searchWord.toLowerCase())){
-            return true;
-        }else{
-            return false;
-        }
     }else{
         return false;
-    }*/
+    }
+}
 
 function searchFor(searchWord){
     inputArray.forEach(input =>{
         if(checkSearchTerm(input, searchWord) == true){
             matchList.push(input);
-
         }
     })
 }
