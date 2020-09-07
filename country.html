@@ -28,8 +28,9 @@
         <button onclick="addButtonEventHandler()">Add</button>
         <br>
 
-
-        <input type="text" id="searchInput" name="search" placeholder="Search" oninput="searchFieldEventHandler(document.getElementById('searchInput'))">
+        <form method="post" name="form" oninput="searchFieldEventHandler(document.getElementById('searchInput'))">
+            <input type="text" id="searchInput" name="search" placeholder="Search">
+        </form>
 
         <ul id="countryList">
         </ul>

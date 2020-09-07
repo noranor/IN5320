@@ -1,4 +1,5 @@
-let countryList = document.getElementById("countryList");
+let countryList = document.querySelector("#countryList");
+let form = document.querySelector('form');
 let searchWord;
 let inputArray = [];
 let matchList = [];
@@ -29,26 +30,36 @@ function addButtonEventHandler(){
  *      @param {searchWord (String) User input to be searched}
  *      @return N/A
  */
-function searchFieldEventHandler(searchWord){
-    //matchList = [];
+function searchFieldEventHandler(searchedWord){
+    searchWord = searchedWord;
+    //console.log(searchWord.value);
     // THIS FUNCTION DOES NOT!!! TOUCH COUNTRY LIST
 
-    searchWord.addEventListener("keydown", function(){
+    form.addEventListener("keyup", function(){
         searchWordL = searchWord.value.toLowerCase();
+        console.log("searchWord = ", searchWordL)
         matchList = searchFor(searchWordL);
+        console.log("Matchlist -> ", matchList);
         display();
         
-        /*if(searchWord != ""){
-        }*/
     });
+    matchList.splice(0, matchList.length);
+    console.log("MatchList reset? --> ", matchList);
     //document.getElementById("searchInput").value = "";
 }
 
 function display(){
-    countryList.innerHTML = "";
+    //console.log("\n-----")
+    //console.log("Before zeroing", countryList.getElementsByTagName("li"));
+    while(countryList.firstChild){
+        countryList.removeChild(countryList.firstChild);
+    }
+    //console.log("After zeroing", countryList.getElementsByTagName("li"));
+    //console.log("inputArray", inputArray)
+    //console.log("-----\n")
      /// THIS FUNCTION ONLYY!!! CREATES COUNTRY LIST, BASED ON INTERNAL LIST. MAY PRINT SUBSET (MATCHED)
     // if search box is empty
-    if(searchWord == undefined && matchList.length == 0){
+    if(searchWord == undefined || searchWord == "" && matchList.length == 0){
         inputArray.forEach(function(stringInput){
             $.getJSON("https://d6wn6bmjj722w.population.io/1.0/population/" + stringInput + "/today-and-tomorrow/").done(function(data){
             // According to the API format. 
@@ -56,13 +67,11 @@ function display(){
                 let tomorrow = data.total_population[1].population;
                 console.log("Population for ", stringInput, " is ", today);
 
-                countryList.innerHTML += "<li>" + stringInput + " - " + today + "<button id='deleteButton'>X</button> </li>";
+                countryList.innerHTML += "<li id='country'>" + stringInput + " - " + today + "<button id='deleteButton'>X</button> </li>";
             })
         })
-    }
-      // DRAW LIST SHOWING ALL COUNTRIES --- NO EVENT HANDLERSs
-    // if search box is not empty, and there are matching results
-    if(searchWord != "" && matchList.length != 0){
+    }else if(searchWord != undefined && matchList.length != 0){
+        console.log("Oppdaterer list etter søk");
         matchList.forEach(function(matchingInput){
             $.getJSON("https://d6wn6bmjj722w.population.io/1.0/population/" + matchingInput + "/today-and-tomorrow/").done(function(data){
             // According to the API format. 
@@ -70,43 +79,30 @@ function display(){
                 let tomorrow = data.total_population[1].population;
                 console.log("Population for ", matchingInput, " is ", today);
 
-                countryList.innerHTML += "<li>" + matchingInput + " - " + today + "<button id='deleteButton'>X</button> </li>";
+                countryList.innerHTML += "<li id='country'>" + matchingInput + " - " + today + "<button id='deleteButton'>X</button> </li>";
             })
         })
         matchList = [];
         // DRAW LIST SHOWING MATCHED COUNTRIES --- NO EVENT HANDLERS
+    }else{
+        console.log("NO match on searchWord ", searchWord)
+        for(let i = 0; i < countryList.getElementsByTagName("li").length; i ++){
+            countryList.getElementsByTagName("li")[i].innerHTML += "";
+        }
     }
     // if search box is empty and there are no matching results
-    if(searchWord != undefined || searchWord != "" && matchList.length == 0){
+      // DRAW LIST SHOWING ALL COUNTRIES --- NO EVENT HANDLERSs
+    // if search box is not empty, and there are matching results
+    // if search box is empty and there are no matching results
+    /*if(searchWord != undefined || searchWord != "" && matchList.length == 0){
         console.log("NO match on searchWord ", searchWord)
         for(let i = 0; i < countryList.getElementsByTagName("li").length; i ++){
             countryList.getElementsByTagName("li")[i].innerHTML += "";
         }
         // DONT DRAW A LIST AT ALL!!! --- NO EVENT HANDLERS
-    }
+    }*/
 }
 
-/**
- *      This function alter the display of list elements based on search matches.
- * 
- *      @param {matchList (Array - Integer) - Array of indices where search match has been found} 
- *      @return N/A
- */
-/*function updateDisplay(matchList){
-
-    console.log("+++Updating display")
-    let list = countryList.getElementsByTagName("li");
-    console.log(list);
-    for(let i = 0; i < list.length; i++){
-        if(matchList.includes(i)){
-            console.log("Showing ",list[i]);
-            list[i].style.display = "list-item";
-        }else{
-            console.log("Hiding ",list[i]);
-            list[i].style.visibility = "hidden";
-        }
-    }
-}*/
 /**
  *      Function that checks if the list-element mathes a search input. Returns true if it does, 
  *      false if it doesn't.
@@ -116,8 +112,13 @@ function display(){
  *      @return {Boolean}
  */
 function checkSearchTerm(li, searchWord){
-    if(li.toLowerCase().startsWith(searchWord.toLowerCase())){
-        return true;
+    console.log("Checking search term; ", searchWord);
+    if(searchWord != "" || searchWord != undefined){
+        if(li.toLowerCase().startsWith(searchWord.toLowerCase())){
+            return true;
+        }else{
+            return false;
+        }
     }else{
         return false;
     }
@@ -136,9 +137,10 @@ function searchFor(searchWord){
     inputArray.forEach(function(input){
         if(checkSearchTerm(input, searchWord) == true){
             matchList.push(input);
+            console.log("Pushed ", input, " to matchList");
         }
     })
-    console.log("Matches: ",matchList)
+    //console.log("Matches: ",matchList)
     return matchList;
 }
 /**
