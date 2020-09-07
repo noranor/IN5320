@@ -7,13 +7,32 @@
                 h1{
                     font-family: Arial;
                     font-size: 2em;
+                    text-align: center;
                 }
     
                 h2{
                     font-family: Arial;
                     font-size: 1em;
+                    text-align: center;
                 }
-    
+
+                .input{
+                  text-align: center;  
+                }
+
+                #country{
+                    text-align: center;
+                }
+
+                #deleteButton:hover{
+                    background-color: darkred;
+                    color: white;
+                }
+
+                #addButton:hover{
+                    background-color: lightskyblue;
+                }
+
         </style>
     </head>
     <body>
@@ -23,16 +42,18 @@
                 <h2>Add some countries to get their current population.</h2>
             </section>
         </header>
-
-        <input type="country" name="userInput" id="userInput" placeholder="Country">
-        <button onclick="addButtonEventHandler()">Add</button>
+        <br>
+        <div class="input">
+            <input type="country" name="userInput" id="userInput" placeholder="Country">
+        <button id="addButton" onclick="addButtonEventHandler()">Add</button>
         <br>
 
         <form method="post" name="form" oninput="searchFieldEventHandler(document.getElementById('searchInput'))">
-            <input type="text" id="searchInput" name="search" placeholder="Search">
+            <input type="text" id="searchInput" name="search" placeholder="Search" size="26">
         </form>
+        </div>
 
-        <ul id="countryList">
+        <ul id="countryList" style="list-style: none">
         </ul>
 
     </body>

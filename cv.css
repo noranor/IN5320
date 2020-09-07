@@ -1,0 +1,107 @@
+h1{
+    background: white;
+    color: darkred;
+    font-size: 2rem;
+    text-align: center;
+    font-family: Arial;
+}
+h2{
+    color: darkred;
+    font-size: 1rem;
+    text-align: center;
+    font-family: Arial;
+}
+
+.picture{
+    text-align: center;
+    border-radius: 1em 1em 1em 1em;
+}
+.big-box:first-child, .big-box:last-child{
+    margin: 0 auto;
+}
+.big-box{
+    position: static;
+    box-sizing: border-box;
+    width: 800px;
+    height: 600px;
+    bottom: 50px;
+    border: 1em double darkred;
+}
+
+.box1-text{
+    color: white;
+    font-size: 1em;
+    text-align: center;
+    font-family: Arial;
+}
+
+
+.box2-text{
+    color: white;
+    font-size: 1em;
+    text-align: center;
+    font-family: Arial;
+}
+
+.box3-text{
+    color: white;
+    font-size: 1em;
+    text-align: center;
+    font-family: Arial;
+}
+
+.box4-text{
+    color: white;
+    font-size: 1em;
+    text-align: center;
+    font-family: Arial;
+}
+
+#small-box{
+    position: relative;
+    width: 350px;
+    height: 200px;
+    background: darkred;
+    border: solid darkred;
+    border-radius: 1em 1em 1em 1em;
+    margin: 5 auto;
+    top: 10px;
+}
+
+.box1{
+    float: left;
+    margin-right: 5px;
+    left: 15px;
+}
+
+.box2{
+    float: right;
+    margin-left: 5px;
+    right: 15px;
+}
+.box3{
+    float: right;
+    margin-left: 5px;
+    right: 15px;
+}
+
+.box4{
+    float: right;
+    margin-left: 10px;
+    right: 15px;
+}
+
+nav a{
+    display: inline-block;
+    padding: 0.5em 0.5em 0.5em 0.5em;
+    background: darkred;
+    color: white;
+    border: solid darkred;
+    border-radius: 0.5em 0.5em 0.5em 0.5em;
+    margin: 1em 0em 0em 1em;
+}
+
+.links{
+    text-align: center;
+    font-family: Arial;
+}
