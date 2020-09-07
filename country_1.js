@@ -32,53 +32,67 @@ function addButtonEventHandler(){
  */
 function searchFieldEventHandler(searchedWord){
     searchWord = searchedWord;
+    matchList.splice(0, matchList.length);
     //console.log(searchWord.value);
     // THIS FUNCTION DOES NOT!!! TOUCH COUNTRY LIST
 
-    form.addEventListener("keyup", function(){
+    form.addEventListener("input", function(){
         searchWordL = searchWord.value.toLowerCase();
-        console.log("searchWord = ", searchWordL)
-        matchList = searchFor(searchWordL);
-        console.log("Matchlist -> ", matchList);
-        display();
+        console.log("searchWord lengde  = ", searchWordL.length)
+        if(searchWordL.length != 0){
+            matchList = searchFor(searchWordL);
+            console.log("Matchlist -> ", matchList);
+            display();  
+        }else{
+            console.log("Dette skal skje når jeg sletter ting fra søkefeltet");
+            display();
+        }
+        //matchList = searchFor(searchWordL);
+        //console.log("Matchlist -> ", matchList);
         
     });
-    matchList.splice(0, matchList.length);
-    console.log("MatchList reset? --> ", matchList);
+    //matchList.splice(0, matchList.length);
+    //console.log("MatchList reset? --> ", matchList);
     //document.getElementById("searchInput").value = "";
 }
 
 function display(){
-    //console.log("\n-----")
-    //console.log("Before zeroing", countryList.getElementsByTagName("li"));
+    console.log("\n-----")
+    console.log("======= Start of display")
     while(countryList.firstChild){
         countryList.removeChild(countryList.firstChild);
     }
-    //console.log("After zeroing", countryList.getElementsByTagName("li"));
     //console.log("inputArray", inputArray)
-    //console.log("-----\n")
      /// THIS FUNCTION ONLYY!!! CREATES COUNTRY LIST, BASED ON INTERNAL LIST. MAY PRINT SUBSET (MATCHED)
     // if search box is empty
     if(searchWord == undefined || searchWord == "" && matchList.length == 0){
-        inputArray.forEach(function(stringInput){
+        console.log("--> Entering 1st IF")
+//        inputArray.forEach(function(stringInput){
+        inputArray.forEach(stringInput => {
             $.getJSON("https://d6wn6bmjj722w.population.io/1.0/population/" + stringInput + "/today-and-tomorrow/").done(function(data){
             // According to the API format. 
                 let today = data.total_population[0].population;
                 let tomorrow = data.total_population[1].population;
-                console.log("Population for ", stringInput, " is ", today);
-
+                countryList.innerHTML += "<li id='country'>" + stringInput + " - " + today + "<button id='deleteButton'>X</button> </li>";
+            })
+        })
+    }else if(searchWord != undefined || searchWord == "" && matchList.length == 0){
+        console.log("--> Entering 2nd IF")
+        inputArray.forEach(stringInput => {
+            $.getJSON("https://d6wn6bmjj722w.population.io/1.0/population/" + stringInput + "/today-and-tomorrow/").done(function(data){
+            // According to the API format. 
+                let today = data.total_population[0].population;
+                let tomorrow = data.total_population[1].population;
                 countryList.innerHTML += "<li id='country'>" + stringInput + " - " + today + "<button id='deleteButton'>X</button> </li>";
             })
         })
     }else if(searchWord != undefined && matchList.length != 0){
-        console.log("Oppdaterer list etter søk");
-        matchList.forEach(function(matchingInput){
+        console.log("--> Entering 3rd IF")
+        matchList.forEach(matchingInput => {
             $.getJSON("https://d6wn6bmjj722w.population.io/1.0/population/" + matchingInput + "/today-and-tomorrow/").done(function(data){
             // According to the API format. 
                 let today = data.total_population[0].population;
                 let tomorrow = data.total_population[1].population;
-                console.log("Population for ", matchingInput, " is ", today);
-
                 countryList.innerHTML += "<li id='country'>" + matchingInput + " - " + today + "<button id='deleteButton'>X</button> </li>";
             })
         })
@@ -90,6 +104,7 @@ function display(){
             countryList.getElementsByTagName("li")[i].innerHTML += "";
         }
     }
+    console.log("======= End of display")
     // if search box is empty and there are no matching results
       // DRAW LIST SHOWING ALL COUNTRIES --- NO EVENT HANDLERSs
     // if search box is not empty, and there are matching results
@@ -137,7 +152,7 @@ function searchFor(searchWord){
     inputArray.forEach(function(input){
         if(checkSearchTerm(input, searchWord) == true){
             matchList.push(input);
-            console.log("Pushed ", input, " to matchList");
+            //console.log("Pushed ", input, " to matchList");
         }
     })
     //console.log("Matches: ",matchList)
@@ -177,7 +192,7 @@ function setBrowserStorage(element){
  */
 function offlineStorage(inputArray){
     for(let i = 0; i < inputArray.length; i++){
-        console.log("Running sessionStorage for ", inputArray[i]);
+        //console.log("Running sessionStorage for ", inputArray[i]);
         setBrowserStorage(inputArray[i]);
     }
 
